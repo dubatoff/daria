@@ -1,0 +1,14 @@
+import { createRequire } from "node:module";
+const runtimeRequire=createRequire("C:/Users/dubat/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.js");
+const {chromium}=runtimeRequire("playwright");
+const browser=await chromium.launch({headless:true,executablePath:"C:/Program Files/Google/Chrome/Application/chrome.exe"});
+const page=await browser.newPage({viewport:{width:1280,height:720}});
+await page.goto("http://localhost:4173/",{waitUntil:"networkidle"});
+await page.waitForTimeout(5200);
+await page.getByRole("link",{name:"Daria Demian"}).hover();
+await page.waitForTimeout(900);
+await page.screenshot({path:"artifacts/portal-route-check.png"});
+await page.waitForTimeout(7500);
+await page.screenshot({path:"artifacts/portal-route-mid.png"});
+console.log(await page.evaluate(()=>({ready:document.documentElement.dataset.portfolioReady,butterflies:document.querySelectorAll('.portal-butterfly').length,dust:document.querySelectorAll('.portal-dust').length})));
+await browser.close();
